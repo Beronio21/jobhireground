@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f9fa;
+  --foreground: #1a1a2e;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --primary: #6c3dd4;
+  --primary-dark: #5a32b8;
+  --accent: #f59e0b;
+  --map-bg: #a8d5a2;
 }
 
 @theme inline {
@@ -19,8 +25,165 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+* {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Map styles */
+.map-container {
+  background: linear-gradient(135deg, #7ec8a0 0%, #5db37e 30%, #a8d5a2 60%, #6bbf8a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Road styles */
+.map-road {
+  position: absolute;
+  background: #d4c89a;
+  border-radius: 4px;
+}
+
+/* River styles */
+.map-river {
+  position: absolute;
+  background: linear-gradient(90deg, #5b9bd5, #4a90d9, #5b9bd5);
+  border-radius: 20px;
+  opacity: 0.85;
+}
+
+/* Building styles */
+.map-building {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.map-building:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Quest marker animation */
+@keyframes markerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.quest-marker {
+  animation: markerPulse 2s ease-in-out infinite;
+}
+
+/* Sidebar active item */
+.sidebar-item-active {
+  background: linear-gradient(135deg, #6c3dd4, #8b5cf6);
+  color: white;
+}
+
+/* Progress bar animation */
+@keyframes progressFill {
+  from { width: 0; }
+  to { width: var(--progress-width); }
+}
+
+.xp-bar-fill {
+  animation: progressFill 1s ease-out forwards;
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.2s ease;
+}
+
+/* Card hover effects */
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(108, 61, 212, 0.15);
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+}
+
+/* Map tree decoration */
+.map-tree {
+  position: absolute;
+  font-size: 18px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* City label */
+.city-label {
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* User avatar marker */
+.user-avatar-marker {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.user-avatar-marker:hover {
+  transform: scale(1.15);
+  z-index: 20;
+}
+
+/* Notification badge */
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* Epic Quest badge */
+.epic-badge {
+  background: linear-gradient(135deg, #6c3dd4, #a78bfa);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
