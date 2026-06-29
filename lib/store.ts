@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Job, Application, mockApplications, savedQuestIds, currentUser, User } from "./mock-data";
+import { Job, Application, Notification, mockApplications, mockNotifications, savedQuestIds, currentUser, User, cities } from "./mock-data";
 
 interface AppState {
   // Navigation
@@ -24,6 +24,10 @@ interface AppState {
   selectedRegion: string;
   setSelectedRegion: (region: string) => void;
 
+  // Map city
+  selectedCity: string;
+  setSelectedCity: (city: string) => void;
+
   // Filter
   activeJobTypeFilter: string;
   setActiveJobTypeFilter: (type: string) => void;
@@ -35,6 +39,11 @@ interface AppState {
   // Notification panel
   notificationPanelOpen: boolean;
   toggleNotificationPanel: () => void;
+
+  // Notifications
+  notifications: Notification[];
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: () => void;
 
   // Map zoom
   mapZoom: number;
@@ -82,6 +91,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   selectedRegion: "Bukidnon",
   setSelectedRegion: (region) => set({ selectedRegion: region }),
 
+  selectedCity: cities[1].name,
+  setSelectedCity: (city) => set({ selectedCity: city }),
+
   activeJobTypeFilter: "All",
   setActiveJobTypeFilter: (type) => set({ activeJobTypeFilter: type }),
 
@@ -103,6 +115,21 @@ export const useAppStore = create<AppState>((set, get) => ({
   notificationPanelOpen: false,
   toggleNotificationPanel: () =>
     set((state) => ({ notificationPanelOpen: !state.notificationPanelOpen })),
+
+  notifications: [...mockNotifications],
+  markNotificationRead: (id) =>
+    set((state) => ({
+      notifications: state.notifications.map((notification) =>
+        notification.id === id ? { ...notification, isRead: true } : notification
+      ),
+    })),
+  markAllNotificationsRead: () =>
+    set((state) => ({
+      notifications: state.notifications.map((notification) => ({
+        ...notification,
+        isRead: true,
+      })),
+    })),
 
   mapZoom: 1,
   zoomIn: () => set((state) => ({ mapZoom: Math.min(state.mapZoom + 0.15, 1.8) })),

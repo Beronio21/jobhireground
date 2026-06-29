@@ -6,10 +6,11 @@ import Avatar from "@/components/ui/Avatar";
 const regions = ["Bukidnon", "Davao del Norte", "Misamis Oriental", "Misamis Occidental", "Lanao del Norte"];
 
 export default function TopNav() {
-  const { user, selectedRegion, setSelectedRegion, toggleNotificationPanel, notificationPanelOpen } = useAppStore();
+  const { user, selectedRegion, setSelectedRegion, toggleNotificationPanel, notificationPanelOpen, notifications, setActiveTab } = useAppStore();
   const [regionOpen, setRegionOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
+  const unreadNotifications = notifications.filter((notification) => !notification.isRead).length;
 
   return (
     <header className="h-14 bg-white border-b border-gray-200 flex items-center px-4 gap-3 shrink-0 z-20 relative">
@@ -79,7 +80,7 @@ export default function TopNav() {
         }`}
       >
         <span className="text-xl">🔔</span>
-        <span className="notification-badge">3</span>
+        {unreadNotifications > 0 && <span className="notification-badge">{unreadNotifications}</span>}
       </button>
 
       {/* Profile */}
@@ -121,22 +122,21 @@ export default function TopNav() {
             <h3 className="font-bold text-gray-900">Notifications</h3>
           </div>
           <div className="py-2 max-h-64 overflow-y-auto">
-            {[
-              { icon: "✅", text: "Your application for Data Engineer was accepted!", time: "2h ago", color: "text-green-600" },
-              { icon: "🔔", text: "New quest available: UI/UX Designer at TechNova", time: "5h ago", color: "text-violet-600" },
-              { icon: "📋", text: "Your quest application is under review", time: "1d ago", color: "text-blue-600" },
-            ].map((n, i) => (
-              <div key={i} className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex gap-3">
-                <span className={`text-lg ${n.color}`}>{n.icon}</span>
+            {notifications.slice(0, 3).map((notification) => (
+              <div key={notification.id} className="px-4 py-3 hover:bg-gray-50 cursor-pointer flex gap-3">
+                <span className={`text-lg ${notification.isRead ? "text-gray-300" : "text-violet-600"}`}>•</span>
                 <div>
-                  <p className="text-sm text-gray-800 leading-snug">{n.text}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{n.time}</p>
+                  <p className="text-sm text-gray-800 leading-snug">{notification.title}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{notification.message}</p>
                 </div>
               </div>
             ))}
           </div>
           <div className="p-3 border-t border-gray-100 text-center">
-            <button className="text-sm text-violet-600 font-medium hover:text-violet-800">
+            <button
+              className="text-sm text-violet-600 font-medium hover:text-violet-800"
+              onClick={() => { setActiveTab("notifications"); toggleNotificationPanel(); }}
+            >
               View all notifications
             </button>
           </div>

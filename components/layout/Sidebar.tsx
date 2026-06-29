@@ -3,22 +3,24 @@ import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import Avatar from "@/components/ui/Avatar";
 
-const navItems = [
-  { id: "explore",      label: "Explore Map",     icon: "🗺️"  },
-  { id: "quests",       label: "Quest Board",     icon: "📋", badge: 12 },
-  { id: "applications", label: "My Applications", icon: "📄"  },
-  { id: "saved",        label: "Saved Quests",    icon: "🔖"  },
-  { id: "profile",      label: "My Profile",      icon: "👤"  },
-  { id: "messages",     label: "Messages",        icon: "✉️"  },
-  { id: "companies",    label: "Companies (Guilds)", icon: "🏢" },
-  { id: "leaderboard",  label: "Leaderboard",     icon: "🏆"  },
-  { id: "settings",     label: "Settings",        icon: "⚙️"  },
-];
-
 export default function Sidebar() {
-  const { activeTab, setActiveTab, user } = useAppStore();
+  const { activeTab, setActiveTab, user, notifications } = useAppStore();
 
   const xpPercent = Math.round((user.xp / user.maxXp) * 100);
+  const unreadNotifications = notifications.filter((notification) => !notification.isRead).length;
+
+  const navItems = [
+    { id: "explore",      label: "Explore Map",        icon: "🗺️"  },
+    { id: "quests",       label: "Quest Board",        icon: "📋", badge: 12 },
+    { id: "applications", label: "My Applications",    icon: "📄"  },
+    { id: "saved",        label: "Saved Quests",       icon: "🔖"  },
+    { id: "profile",      label: "My Profile",         icon: "👤"  },
+    { id: "notifications", label: "Notifications",     icon: "🔔", badge: unreadNotifications || undefined },
+    { id: "messages",     label: "Messages",           icon: "✉️"  },
+    { id: "companies",    label: "Companies (Guilds)", icon: "🏢" },
+    { id: "leaderboard",  label: "Leaderboard",        icon: "🏆"  },
+    { id: "settings",     label: "Settings",           icon: "⚙️"  },
+  ];
 
   return (
     <aside className="w-56 bg-white border-r border-gray-200 flex flex-col h-full shrink-0">

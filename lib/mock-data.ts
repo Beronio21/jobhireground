@@ -46,6 +46,16 @@ export interface Application {
     appliedAt: string;
 }
 
+export interface Notification {
+    id: string;
+    userId: string;
+    title: string;
+    message: string;
+    type: "Application Update" | "New Job" | "Company Message" | "System" | "Reward";
+    isRead: boolean;
+    createdAt: string;
+}
+
 export interface CityData {
     id: string;
     name: string;
@@ -424,6 +434,46 @@ export const mockApplications: Application[] = [
         jobId: "job-9",
         status: "accepted",
         appliedAt: "2026-06-20",
+    },
+];
+
+// ─── MOCK NOTIFICATIONS ──────────────────────────────────────────────────────
+export const mockNotifications: Notification[] = [
+    {
+        id: "notif-1",
+        userId: "user-1",
+        title: "Application approved",
+        message: "Your application for Data Engineer was accepted by DataMind Analytics.",
+        type: "Application Update",
+        isRead: false,
+        createdAt: "2026-06-28",
+    },
+    {
+        id: "notif-2",
+        userId: "user-1",
+        title: "New quest available",
+        message: "UI/UX Designer at TechNova Solutions is now open in Valencia City.",
+        type: "New Job",
+        isRead: false,
+        createdAt: "2026-06-28",
+    },
+    {
+        id: "notif-3",
+        userId: "user-1",
+        title: "Application under review",
+        message: "GreenPower Bukidnon is reviewing your Logistics Coordinator application.",
+        type: "Application Update",
+        isRead: true,
+        createdAt: "2026-06-27",
+    },
+    {
+        id: "notif-4",
+        userId: "user-1",
+        title: "Profile completed",
+        message: "Your profile is now 80% complete. Add a portfolio link to improve visibility.",
+        type: "System",
+        isRead: true,
+        createdAt: "2026-06-26",
     },
 ];
 

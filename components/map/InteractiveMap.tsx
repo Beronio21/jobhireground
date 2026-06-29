@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useAppStore } from "@/lib/store";
-import { mockJobs, mockCompanies, cities, getJobsByCity } from "@/lib/mock-data";
+import { mockJobs, mockCompanies, cities } from "@/lib/mock-data";
 import { getJobTypeMarkerColor } from "@/lib/utils";
 import MapLegend from "./MapLegend";
 
@@ -140,23 +140,32 @@ function UserMarker({ x, y, name, color }: { x: number; y: number; name: string;
 }
 
 function CityLabel({ city }: { city: typeof cities[0] }) {
-  const jobs = getJobsByCity(city.name);
+  const { selectedCity, setSelectedCity } = useAppStore();
   const jobCount = city.jobCount;
   const compCount = city.companyCount;
 
+  const labelAdjustments: Record<string, { x: string; y: string }> = {
+    "Don Carlos": { x: "-68%", y: "-170%" },
+    Quezon: { x: "-30%", y: "-170%" },
+  };
+
+  const offset = labelAdjustments[city.name] ?? { x: "-50%", y: "-130%" };
+
   return (
-    <div
-      className="city-label"
-      style={{ left: `${city.x}%`, top: `${city.y}%`, transform: "translate(-50%, -130%)" }}
+    <button
+      type="button"
+      onClick={() => setSelectedCity(city.name)}
+      className={`city-label text-left transition-all ${selectedCity === city.name ? "ring-2 ring-white shadow-2xl scale-[1.03]" : ""}`}
+      style={{ left: `${city.x}%`, top: `${city.y}%`, transform: `translate(${offset.x}, ${offset.y})` }}
     >
       <div className="text-[11px] font-black tracking-wider mb-0.5">{city.name.toUpperCase()}</div>
       <div className="text-[10px] text-gray-300 font-normal">{jobCount} Jobs • {compCount} Companies</div>
-    </div>
+    </button>
   );
 }
 
 export default function InteractiveMap() {
-  const { selectedJob, setSelectedJob, mapZoom, zoomIn, zoomOut, activeJobTypeFilter, setActiveJobTypeFilter } = useAppStore();
+  const { selectedJob, setSelectedJob, mapZoom, zoomIn, zoomOut, activeJobTypeFilter, setActiveJobTypeFilter, selectedCity, setSelectedCity } = useAppStore();
 
   const filteredMarkers = jobMarkers.filter((m) => {
     if (activeJobTypeFilter === "All") return true;
@@ -173,6 +182,17 @@ export default function InteractiveMap() {
           <span className="font-bold text-gray-900">Bukidnon</span>
           <span className="text-gray-400 text-xs">▼</span>
         </div>
+        <select
+          value={selectedCity}
+          onChange={(e) => setSelectedCity(e.target.value)}
+          className="bg-white rounded-xl border border-gray-200 shadow px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:border-violet-300"
+        >
+          {cities.map((city) => (
+            <option key={city.id} value={city.name}>
+              {city.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Zoom Controls */}

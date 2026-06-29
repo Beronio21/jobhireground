@@ -11,6 +11,8 @@ import SavedQuests from "@/components/views/SavedQuests";
 import MyProfile from "@/components/views/MyProfile";
 import CompaniesView from "@/components/views/CompaniesView";
 import Leaderboard from "@/components/views/Leaderboard";
+import NotificationsView from "@/components/views/NotificationsView";
+import SettingsView from "@/components/views/SettingsView";
 
 function MapView() {
   const { selectedJob } = useAppStore();
@@ -39,18 +41,6 @@ function MessagesView() {
   );
 }
 
-function SettingsView() {
-  return (
-    <div className="flex-1 flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <div className="text-5xl mb-3">⚙️</div>
-        <div className="font-bold text-gray-700 text-xl">Settings</div>
-        <div className="text-gray-400 mt-2">Account settings coming soon!</div>
-      </div>
-    </div>
-  );
-}
-
 export default function DashboardLayout() {
   const { activeTab } = useAppStore();
 
@@ -62,6 +52,7 @@ export default function DashboardLayout() {
       case "saved":        return <SavedQuests />;
       case "profile":      return <MyProfile />;
       case "messages":     return <MessagesView />;
+      case "notifications": return <NotificationsView />;
       case "companies":    return <CompaniesView />;
       case "leaderboard":  return <Leaderboard />;
       case "settings":     return <SettingsView />;
